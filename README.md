@@ -21,9 +21,9 @@ They're written for [Claude Code](https://claude.com/claude-code) and any agent 
 `ship` calls out to two external gates. Both are **best-effort** — if the plugin isn't installed, `ship` proceeds without it and you lose that gate's safety net — but installing them is where a lot of the value lives:
 
 - **Simplify** (invariant 1) — `ship` runs a `/simplify` pass over the final diff. This capability comes from Anthropic's **[`code-simplifier`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)** plugin in the official `claude-plugins-official` marketplace (an agent that refines recently-modified code for clarity/consistency while preserving behaviour).
-- **Independent review** (invariant 5) — before merge, `ship` runs `/codex:review` (the [Codex](https://github.com/openai/codex) plugin) against the open PR and requires every finding to be fixed or rebutted on the thread. The point is a *different* model's eyes on the change, not the one that wrote it — a cheap, effective check against blind spots.
+- **Independent review** (invariant 5) — before merge, `ship` runs `/codex:review` from OpenAI's **[codex plugin](https://github.com/openai/codex-plugin-cc)** against the open PR and requires every finding to be fixed or rebutted on the thread. The point is a *different* model's eyes on the change, not the one that wrote it — a cheap, effective check against blind spots. (This plugin also needs the [Codex CLI](https://github.com/openai/codex) installed and authenticated to actually run.)
 
-To enable them, install the `code-simplifier` plugin from the official marketplace and the Codex CLI + its Claude Code plugin so `/simplify` and `/codex:review` resolve.
+To enable them, install the `code-simplifier` plugin from the official marketplace, and the `codex` plugin (plus the Codex CLI), so `/simplify` and `/codex:review` resolve.
 
 ## Get the most from your inference providers
 
