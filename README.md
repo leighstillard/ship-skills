@@ -16,6 +16,18 @@ They're written for [Claude Code](https://claude.com/claude-code) and any agent 
 
 `ship` is the entry point; the other four are the gates it runs (and each is independently useful on its own).
 
+## Independent review & your inference providers
+
+One of `ship`'s gates is a **second-model review**: before merge it runs `/codex:review` (the [Codex](https://github.com/openai/codex) plugin) against the open PR and requires every finding to be fixed or rebutted on the thread. The point is to get a *different* model's eyes on the change, not the one that wrote it — a cheap, effective check against blind spots.
+
+That gate is best-effort: if the Codex plugin isn't installed, `ship` proceeds without it (and you lose the independent-review safety net). If you want it, install the Codex CLI + its Claude Code plugin so `/codex:review` resolves.
+
+More generally, these skills get sharper the more inference options you give your agent. **Ask your agent what review tools and providers it actually has available — and how to make the best of them.** For example:
+
+> What inference providers and code-review tools do I have wired up (Codex, other model CLIs, MCP reviewers, CI bots)? Given those, how should the `ship` skills' verify and review gates use them to get a genuinely independent second opinion on my changes?
+
+The skills are written to *use* an independent reviewer when one exists; pointing them at the strongest one you have access to is where most of the value is.
+
 ## Installation
 
 These are folders containing a `SKILL.md`. Installing them means dropping each folder into your agent's skills directory.
