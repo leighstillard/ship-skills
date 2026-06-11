@@ -16,13 +16,18 @@ They're written for [Claude Code](https://claude.com/claude-code) and any agent 
 
 `ship` is the entry point; the other four are the gates it runs (and each is independently useful on its own).
 
-## Independent review & your inference providers
+## Optional companion plugins
 
-One of `ship`'s gates is a **second-model review**: before merge it runs `/codex:review` (the [Codex](https://github.com/openai/codex) plugin) against the open PR and requires every finding to be fixed or rebutted on the thread. The point is to get a *different* model's eyes on the change, not the one that wrote it — a cheap, effective check against blind spots.
+`ship` calls out to two external gates. Both are **best-effort** — if the plugin isn't installed, `ship` proceeds without it and you lose that gate's safety net — but installing them is where a lot of the value lives:
 
-That gate is best-effort: if the Codex plugin isn't installed, `ship` proceeds without it (and you lose the independent-review safety net). If you want it, install the Codex CLI + its Claude Code plugin so `/codex:review` resolves.
+- **Simplify** (invariant 1) — `ship` runs a `/simplify` pass over the final diff. This capability comes from Anthropic's **[`code-simplifier`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)** plugin in the official `claude-plugins-official` marketplace (an agent that refines recently-modified code for clarity/consistency while preserving behaviour).
+- **Independent review** (invariant 5) — before merge, `ship` runs `/codex:review` (the [Codex](https://github.com/openai/codex) plugin) against the open PR and requires every finding to be fixed or rebutted on the thread. The point is a *different* model's eyes on the change, not the one that wrote it — a cheap, effective check against blind spots.
 
-More generally, these skills get sharper the more inference options you give your agent. **Ask your agent what review tools and providers it actually has available — and how to make the best of them.** For example:
+To enable them, install the `code-simplifier` plugin from the official marketplace and the Codex CLI + its Claude Code plugin so `/simplify` and `/codex:review` resolve.
+
+## Get the most from your inference providers
+
+These skills get sharper the more inference options you give your agent. **Ask your agent what review tools and providers it actually has available — and how to make the best of them.** For example:
 
 > What inference providers and code-review tools do I have wired up (Codex, other model CLIs, MCP reviewers, CI bots)? Given those, how should the `ship` skills' verify and review gates use them to get a genuinely independent second opinion on my changes?
 
